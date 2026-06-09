@@ -1,9 +1,17 @@
-import { Heart, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Heart, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Languages } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 
 const Footer = () => {
-  const { t, language } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
+
+  const cycleLang = () => {
+    const langs: ("en" | "hi" | "bho")[] = ["en", "hi", "bho"];
+    const next = langs[(langs.indexOf(language) + 1) % langs.length];
+    setLanguage(next);
+  };
+  const langLabel = language === "en" ? "हिंदी" : language === "hi" ? "भोजपुरी" : "English";
   
   return (
     <footer className="bg-gradient-to-br from-primary to-secondary text-white">
@@ -99,10 +107,22 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/20 mt-8 pt-8 text-center">
-          <p className="text-white/70 text-sm">
+        <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-white/70 text-sm text-center md:text-left">
             &copy; {new Date().getFullYear()} {t("hospitalName")} - {t("hospitalLocation")}. {t("allRightsReserved")}.
           </p>
+          <div className="flex items-center gap-2">
+            <span className="text-white/70 text-xs">Language:</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={cycleLang}
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white gap-2"
+            >
+              <Languages className="w-4 h-4" />
+              {langLabel}
+            </Button>
+          </div>
         </div>
       </div>
     </footer>
