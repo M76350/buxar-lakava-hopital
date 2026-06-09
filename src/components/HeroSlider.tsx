@@ -62,14 +62,21 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
         <div className="max-w-3xl text-white animate-fade-in">
-          <p className="text-lg md:text-xl mb-4 text-white/90">
+          <p className="text-sm md:text-base mb-3 text-white/85 uppercase tracking-wider">
             {slides[currentIndex].subtitle}
           </p>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            {slides[currentIndex].title}
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+            Aadhunik Lakva Polio Hospital
+            <span className="block text-xl md:text-2xl lg:text-3xl font-medium mt-2 text-white/95">
+              Geetanagar Basahi, Buxar &middot; Near Kochas, Rohtas Border
+            </span>
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-white/90 max-w-2xl">
-            {slides[currentIndex].description}
+          <p className="text-base md:text-lg mb-3 text-white/90 max-w-2xl">
+            {slides[currentIndex].title} &mdash; {slides[currentIndex].description}
+          </p>
+          <p className="text-sm md:text-base mb-8 text-white/80 max-w-2xl flex items-center gap-2">
+            <svg className="w-4 h-4 inline" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+            Geetanagar Basahi, Buxar, Bihar 802101 &middot; Dr Vishesh Kumar &middot; +91 9110142755
           </p>
           <div className="flex flex-wrap gap-4">
             <Button
