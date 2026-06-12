@@ -1,95 +1,98 @@
-# Aadhunik Lakva Polio Hospital — Comprehensive Upgrade Plan
+# SEO-friendly URL + Page Structure
 
-This is a large, multi-area request. I'll break it into phases so we can ship incrementally and you can review each phase. Please confirm or adjust before I begin.
+Goal: URLs and page titles like `paralysis-hospital-in-kochas` so each location/keyword ranks on its own page, and developers can add new pages by dropping a single data file — no code changes.
 
----
+## New URL structure
 
-## Phase 1 — Foundation: SEO, Routing, Loader, Cookies, Toasts
+```text
+/                                       → Home
+/about, /doctors, /gallery, /contact    → existing
+/services                               → list page
+/services/:slug                         → e.g. /services/physiotherapy
+/locations/:slug                        → NEW, e.g. /locations/paralysis-hospital-in-kochas
+/blog                                   → list page (future)
+/blog/:slug                             → article (future)
+```
 
-1. **Animated splash/loader screen** (2–3s) on first load with hospital logo + spinner animation, then fade into main site.
-2. **Dynamic per-route SEO** using `react-helmet-async` — unique title, description, canonical, OG tags, JSON-LD (`MedicalOrganization` + `LocalBusiness` schema with geo coordinates for Geetanagar Basahi, Buxar) for every page.
-3. **Sitemap generator script** (`scripts/generate-sitemap.ts`) wired to `predev`/`prebuild` so routes + blog articles auto-sync. Update `robots.txt`.
-4. **Cookie consent banner** (necessary cookies auto-accepted) + set `localStorage`/cookie with 1-year expiry to remember the visitor and bias browser suggestions toward the site.
-5. **Global toast system** — green for success, red for errors — used across every form/event (appointment, contact, newsletter, etc.).
-6. **404 page redesign** matching site theme + animated illustration + "Back to Home" CTA.
-7. **Disable custom cursor on mobile/tablet** (already partially there — confirm + tighten).
+Examples of location slugs to ship now:
+- `/locations/paralysis-hospital-in-kochas`
+- `/locations/paralysis-hospital-in-buxar`
+- `/locations/lakva-hospital-in-rohtas`
+- `/locations/polio-hospital-near-dehuan`
+- `/locations/best-hospital-in-kochas`
 
-## Phase 2 — Navigation & Hero
+Each gets its own `<title>`, `<meta description>`, `<h1>`, canonical, OG tags, JSON-LD `MedicalOrganization` + `BreadcrumbList`, and unique body copy → ranks independently for that keyword.
 
-1. **Reduce nav to 4 top-level items**, each with a dropdown menubar:
-   - **About** → About Us, Our Doctors, Gallery
-   - **Services** → All Services, Polio Treatment, Physiotherapy, Paralysis Care, Emergency
-   - **Locations** → Buxar, Kochas, Rohtas, Nearest Cities Map
-   - **Contact** → Contact Us, Book Appointment, Blog/Articles
-2. **Hero rewrite**: H1 = `Aadhunik Lakva Polio Hospital — Geetanagar Basahi, Buxar (Near Kochas, Rohtas Border)` with meaningful intro paragraph and embedded mini-map address line.
-3. **Hero slider keeps original images** (no replacement) — only optimize loading.
-4. **Generate new hero banner image** (AI) featuring doctor + hospital logo composite for use as OG image and hero fallback.
+## File structure (developer-friendly)
 
-## Phase 3 — Performance
+```text
+src/
+├── content/
+│   ├── locations/                ← drop a new .ts file here = new live page
+│   │   ├── _types.ts             (LocationPage interface)
+│   │   ├── _index.ts             (auto-aggregates every sibling export)
+│   │   ├── paralysis-hospital-in-kochas.ts
+│   │   ├── paralysis-hospital-in-buxar.ts
+│   │   ├── lakva-hospital-in-rohtas.ts
+│   │   ├── polio-hospital-near-dehuan.ts
+│   │   └── best-hospital-in-kochas.ts
+│   └── services/
+│       ├── _types.ts
+│       ├── _index.ts
+│       ├── physiotherapy.ts
+│       ├── polio-treatment.ts
+│       └── paralysis-care.ts
+├── pages/
+│   ├── LocationPage.tsx          ← single template, reads slug → content file
+│   ├── LocationsIndex.tsx        ← /locations list, auto-lists all entries
+│   └── ServicesPage.tsx          (existing, refactor to use content/services)
+└── App.tsx                       ← add 2 routes
+```
 
-1. Convert hero / large JPG-PNG assets to **WebP** with `<picture>` fallback.
-2. **Lazy-load** all below-the-fold images (`loading="lazy"`, `decoding="async"`) and route-level `React.lazy` + `Suspense` for non-home pages.
-3. Defer/async non-critical scripts; preconnect to fonts.
-4. Compress any video; add `preload="metadata"`.
+Each content file looks like:
 
-## Phase 4 — Nearest Locations Upgrade
+```ts
+// src/content/locations/paralysis-hospital-in-kochas.ts
+export default {
+  slug: "paralysis-hospital-in-kochas",
+  h1: "Paralysis Hospital in Kochas",
+  title: "Paralysis Hospital in Kochas | Aadhunik Lakva Polio Hospital",
+  description: "Best paralysis & lakva treatment hospital near Kochas, Rohtas border. Expert physiotherapy by Dr Vishesh Kumar, 2km from Kochas.",
+  keywords: "paralysis hospital in kochas, lakva hospital kochas, ...",
+  heroImage: "/images/locations/kochas.webp",
+  intro: "...",                    // 2–3 paragraphs unique copy
+  sections: [                      // alternating image/text blocks
+    { heading: "...", body: "...", image: "..." },
+    ...
+  ],
+  faqs: [{ q: "...", a: "..." }],  // → FAQPage JSON-LD
+  nearbyAreas: ["Dehuan", "Basahi", "Buxar"],
+  mapEmbedQuery: "Aadhunik Lakva Polio Hospital",
+};
+```
 
-- Each city card → **"Get Directions" button** opens Google Maps with destination preset to hospital coords from that origin.
-- Add SEO-rich descriptive paragraph per city (Buxar, Kochas, Rohtas, Dehuan Dairy, Dehuan Village, Ara, Ballia, Varanasi, Patna, Ghazipur).
-- Each location gets its own indexable route `/locations/:city` with unique meta + content (for "lakva hospital in Kochas / Rohtas / Buxar" searches).
+`_index.ts` uses Vite's `import.meta.glob('./*.ts', { eager: true })` so the listing page and sitemap auto-discover every file — adding a new page = one file, zero edits elsewhere.
 
-## Phase 5 — Appointment Flow
+## SEO wiring
 
-- Full multi-step appointment dialog: Patient Info → Service/Department → Preferred Doctor → Date & Time slot → Confirm.
-- All data **static for now** (services, doctors, slots hardcoded in a config file) — clearly marked TODO for later DB wiring.
-- Submission goes through existing `send-contact-email` edge function (extended) with green success toast + confirmation screen.
+- `<LocationPage>` uses `react-helmet-async` to emit per-page title/description/canonical/OG/JSON-LD from the content file.
+- `scripts/generate-sitemap.js` imports the `_index` aggregators and appends one `<url>` per location & service automatically.
+- Internal linking: footer + home "Locations we serve" grid links every location page (boosts crawl + on-page SEO).
+- Breadcrumbs component on each page with `BreadcrumbList` JSON-LD.
 
-## Phase 6 — Content: 10 sections on every page
+## What I will ship in this pass
 
-Every nav page (Home, About, Services, Doctors, Gallery, Contact, Blog, Locations) gets 10 fully-written sections with relevant images, alternating image-left / image-right layouts, GSAP fade-in animations, and a slider for testimonials/feedback.
+1. `src/content/locations/_types.ts`, `_index.ts`, and 5 seed location files (Kochas, Buxar, Rohtas, Dehuan, Basahi) with unique 400-word copy each.
+2. `src/content/services/_types.ts`, `_index.ts`, and 3 seed service files.
+3. `src/pages/LocationPage.tsx` template + `LocationsIndex.tsx` listing.
+4. Routes added in `src/App.tsx`: `/locations` and `/locations/:slug`.
+5. Update `scripts/generate-sitemap.js` to auto-include all location/service slugs.
+6. Add "Locations we serve" link grid on Home + Footer.
+7. Add Locations dropdown back into Navbar (since user originally asked for 4 items, I'll keep 4 and put location links under About → or as a 5th item — confirm below).
 
-## Phase 7 — Blog / Articles System
+## Question
 
-- `/blog` listing page with cards (title + description visible in URL preview via per-route Helmet).
-- `/blog/:slug` detail pages.
-- Seed articles (static JSON for now):
-  - "Best Lakva (Paralysis) Hospital in Buxar — 24×7 Care"
-  - "Polio Treatment Near Kochas, Rohtas Border"
-  - "Dehuan Dairy — Community Health Outreach"
-  - "Dehuan Village — Polio Awareness Drive"
-  - "Paralysis Recovery Stories from Bihar"
-  - Plus 3 more clinical/wellness articles
-- Each article: H1, meta description, OG image, JSON-LD `Article` schema, internal links → boosts backlinks-ability.
-
-## Phase 8 — Local SEO Power-Up
-
-Target keywords baked into titles, H1s, meta, alt text, JSON-LD:
-- `lakava hospital`, `lakava aspatal in Rohtas`, `lakava hospital near me`, `lakava hospital in Buxar`, `best paralysis hospital in Buxar 24×7`, `best hospital in Kochas`, `near me hospital Kochas`, `polio hospital Geetanagar Basahi`, `Dr Vishesh Kumar`.
-- `LocalBusiness` + `MedicalOrganization` JSON-LD with `geo`, `address`, `openingHours`, `telephone`, `priceRange`, `areaServed` (Buxar, Kochas, Rohtas, Dehuan).
-- Footer NAP (Name, Address, Phone) consistent everywhere.
-
-## Phase 9 — Language Toggle → Footer
-
-Move Hindi/English switch from navbar into footer.
-
----
-
-## Technical notes (for reference)
-
-- Stack stays React 18 + Vite + Tailwind + react-router-dom + react-helmet-async + GSAP.
-- Splash uses a single mounted overlay component with `sessionStorage` flag so it only shows once per session (or first ever — your choice).
-- Cookie: `als_visitor=1; max-age=31536000; path=/; SameSite=Lax`.
-- Blog content stored in `src/data/articles.json`; sitemap generator reads it.
-- Image conversion done via `lovable-assets` CDN (already available) → WebP versions uploaded, originals kept for fallback.
-- No backend schema changes needed; appointment + contact reuse existing edge function.
-
----
-
-## Suggested execution order
-
-I recommend shipping **Phase 1 + Phase 2 + Phase 3 first** (foundation, nav, perf — highest SEO impact), verify in preview, then continue with Phase 4–9 in a follow-up turn. Trying to do all 9 phases in one shot will produce a giant unreviewable diff and likely break things.
-
-**Please confirm:**
-1. Proceed with Phases 1–3 now, then 4–9 next? (recommended) — or do you want a different grouping?
-2. Splash screen: show on **every** session, or only the **very first** visit ever?
-3. For the new AI-generated hero banner — do you want me to use your current `DR_logo.jpg` as the doctor reference, or generate a fresh stylized doctor illustration?
+Where should the new Location pages live in the navbar?
+- (A) Keep 4 nav items, add "Locations" submenu under **About** dropdown.
+- (B) Make it 5 top-level items: About / Services / **Locations** / Doctors / Contact.
+- (C) Don't add to navbar; only link from footer + home grid (cleanest, still fully indexable).
