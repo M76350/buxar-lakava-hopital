@@ -19,6 +19,8 @@ const Contact = lazy(() => import("./pages/Contact"));
 const GalleryPage = lazy(() => import("./pages/GalleryPage"));
 const AdminSettings = lazy(() => import("./pages/AdminSettings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const LocationsIndex = lazy(() => import("./pages/LocationsIndex"));
+const LocationPage = lazy(() => import("./pages/LocationPage"));
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,8 @@ const App = () => (
                 <Route path="/doctors" element={<Doctors />} />
                 <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/locations" element={<LocationsIndex />} />
+                <Route path="/locations/:slug" element={<LocationPage />} />
                 <Route path="/admin-settings" element={<AdminSettings />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

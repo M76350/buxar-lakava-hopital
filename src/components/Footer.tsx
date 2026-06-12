@@ -60,7 +60,16 @@ const Footer = () => {
               <li><Link to="/about" className="text-white/80 hover:text-white transition-colors text-sm">{t("about")}</Link></li>
               <li><Link to="/services" className="text-white/80 hover:text-white transition-colors text-sm">{t("services")}</Link></li>
               <li><Link to="/doctors" className="text-white/80 hover:text-white transition-colors text-sm">{t("doctors")}</Link></li>
+              <li><Link to="/locations" className="text-white/80 hover:text-white transition-colors text-sm">{language === "en" ? "Locations" : "स्थान"}</Link></li>
               <li><Link to="/contact" className="text-white/80 hover:text-white transition-colors text-sm">{t("contact")}</Link></li>
+            </ul>
+            <h3 className="text-lg font-semibold mt-6 mb-3">{language === "en" ? "Areas We Serve" : "हमारे क्षेत्र"}</h3>
+            <ul className="space-y-2">
+              <li><Link to="/locations/paralysis-hospital-in-kochas" className="text-white/80 hover:text-white transition-colors text-sm">Paralysis Hospital in Kochas</Link></li>
+              <li><Link to="/locations/paralysis-hospital-in-buxar" className="text-white/80 hover:text-white transition-colors text-sm">Paralysis Hospital in Buxar</Link></li>
+              <li><Link to="/locations/lakva-aspatal-in-rohtas" className="text-white/80 hover:text-white transition-colors text-sm">Lakva Aspatal in Rohtas</Link></li>
+              <li><Link to="/locations/polio-hospital-near-dehuan" className="text-white/80 hover:text-white transition-colors text-sm">Polio Hospital Near Dehuan</Link></li>
+              <li><Link to="/locations/best-hospital-in-kochas" className="text-white/80 hover:text-white transition-colors text-sm">Best Hospital in Kochas</Link></li>
             </ul>
           </div>
 

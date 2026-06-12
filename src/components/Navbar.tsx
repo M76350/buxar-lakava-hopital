@@ -67,6 +67,18 @@ const Navbar = () => {
       ],
     },
     {
+      label: language === "en" ? "Locations" : "स्थान",
+      path: "/locations",
+      children: [
+        { label: language === "en" ? "All Locations" : "सभी स्थान", path: "/locations" },
+        { label: "Paralysis Hospital in Kochas", path: "/locations/paralysis-hospital-in-kochas" },
+        { label: "Paralysis Hospital in Buxar", path: "/locations/paralysis-hospital-in-buxar" },
+        { label: "Lakva Aspatal in Rohtas", path: "/locations/lakva-aspatal-in-rohtas" },
+        { label: "Polio Hospital Near Dehuan", path: "/locations/polio-hospital-near-dehuan" },
+        { label: "Best Hospital in Kochas", path: "/locations/best-hospital-in-kochas" },
+      ],
+    },
+    {
       label: language === "en" ? "Contact" : "संपर्क",
       path: "/contact",
       children: [

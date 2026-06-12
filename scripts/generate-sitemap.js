@@ -1,19 +1,40 @@
 // Runs before `vite dev` and `vite build` (predev/prebuild hooks); writes public/sitemap.xml.
-import { writeFileSync } from "fs";
+// Location slugs are auto-discovered from src/content/locations/*.ts so adding a new
+// location page = adding one file (no edits needed here).
+import { writeFileSync, readdirSync } from "fs";
 import { resolve } from "path";
 
 const BASE_URL = "https://adhunik-lakva-polio-hospital-gitana.vercel.app";
 
 const today = new Date().toISOString().slice(0, 10);
 
-const entries = [
+const staticEntries = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
   { path: "/services", changefreq: "weekly", priority: "0.9" },
   { path: "/doctors", changefreq: "monthly", priority: "0.8" },
   { path: "/gallery", changefreq: "weekly", priority: "0.6" },
   { path: "/contact", changefreq: "monthly", priority: "0.7" },
+  { path: "/locations", changefreq: "weekly", priority: "0.8" },
 ];
+
+// Auto-discover location slugs from src/content/locations
+let locationSlugs = [];
+try {
+  locationSlugs = readdirSync(resolve("src/content/locations"))
+    .filter((f) => f.endsWith(".ts") && !f.startsWith("_"))
+    .map((f) => f.replace(/\.ts$/, ""));
+} catch {
+  // folder may not exist yet on first run
+}
+
+const locationEntries = locationSlugs.map((slug) => ({
+  path: `/locations/${slug}`,
+  changefreq: "monthly",
+  priority: "0.85",
+}));
+
+const entries = [...staticEntries, ...locationEntries];
 
 function generateSitemap(entries) {
   const urls = entries.map((e) =>
