@@ -91,17 +91,17 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link ref={logoRef} to="/" className="flex items-center group" aria-label="Aadhunik Lakva Polio Hospital home">
-            <div className="w-52 h-14 overflow-hidden bg-gradient-primary flex items-center justify-center group-hover:scale-105 transition-transform rounded">
+    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border/60 shadow-[var(--shadow-soft)]">
+      <div className="container mx-auto">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          <Link ref={logoRef} to="/" className="flex items-center group shrink-0" aria-label="Aadhunik Lakva Polio Hospital home">
+            <div className="w-36 sm:w-44 md:w-52 h-11 md:h-14 overflow-hidden bg-gradient-primary flex items-center justify-center group-hover:scale-105 transition-transform rounded-md shadow-[var(--shadow-soft)]">
               <img src={DRLogo} alt="Aadhunik Lakva Polio Hospital Geetanagar Basahi Buxar" className="w-full h-full object-cover" />
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -153,7 +153,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -162,7 +162,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden pb-4 animate-fade-in">
+          <div className="lg:hidden pb-4 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <div key={item.label} className="border-b border-border/40">

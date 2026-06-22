@@ -101,31 +101,31 @@ const Index = () => {
         <HeroSlider slides={heroSlides} />
 
         {/* Section 2: Features */}
-        <section className="py-20 bg-background overflow-hidden">
-          <div className="container mx-auto px-4">
-            <GSAPWrapper animation="fadeUp" className="text-center mb-12">
-              <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+        <section className="py-14 sm:py-20 bg-background overflow-hidden">
+          <div className="container mx-auto">
+            <GSAPWrapper animation="fadeUp" className="text-center mb-10 sm:mb-12">
+              <h2 className="text-2xl sm:text-4xl font-heading font-bold text-foreground mb-3 sm:mb-4 text-balance">
                 {language === "en" ? "Why Choose Us" : "हमें क्यों चुनें"}
               </h2>
-              <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm sm:text-lg font-body text-muted-foreground max-w-2xl mx-auto">
                 {language === "en" 
                   ? "Experience excellence in healthcare with our dedicated team of professionals"
                   : "हमारी समर्पित पेशेवर टीम के साथ स्वास्थ्य सेवा में उत्कृष्टता का अनुभव करें"}
               </p>
             </GSAPWrapper>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
               {features.map((feature, index) => (
                 <GSAPWrapper 
                   key={index} 
                   animation={index % 2 === 0 ? "fadeLeft" : "fadeRight"}
                   delay={index * 0.1}
                 >
-                  <Card className="hover-lift border-0 shadow-lg h-full">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 rounded-full bg-gradient-primary mx-auto mb-4 flex items-center justify-center">
-                        <feature.icon className="w-8 h-8 text-primary" />
+                  <Card className="hover-lift border border-border/40 shadow-[var(--shadow-soft)] h-full bg-card">
+                    <CardContent className="p-5 sm:p-6 text-center">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl gradient-primary mx-auto mb-4 flex items-center justify-center shadow-[var(--shadow-glow)]">
+                        <feature.icon className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground" />
                       </div>
-                      <h3 className="text-xl font-heading font-bold text-foreground mb-2">{feature.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mb-2">{feature.title}</h3>
                       <p className="text-sm font-body text-muted-foreground">{feature.description}</p>
                     </CardContent>
                   </Card>

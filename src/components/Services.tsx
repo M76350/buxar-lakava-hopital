@@ -88,21 +88,21 @@ const Services = () => {
   };
 
   return (
-    <section className="py-20 bg-muted/30 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <GSAPWrapper animation="fadeUp" className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
+    <section className="py-14 sm:py-20 bg-muted/30 overflow-hidden">
+      <div className="container mx-auto">
+        <GSAPWrapper animation="fadeUp" className="text-center mb-10 sm:mb-16">
+          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             {t("ourServices")}
           </span>
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground mb-3 sm:mb-4 text-balance">
             {t("servicesTitle")}
           </h2>
-          <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-lg font-body text-muted-foreground max-w-2xl mx-auto">
             {t("servicesDescription")}
           </p>
         </GSAPWrapper>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {services.map((service, index) => (
             <GSAPWrapper 
               key={service.id}
