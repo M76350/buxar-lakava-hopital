@@ -162,7 +162,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden pb-4 animate-fade-in">
+          <div className="lg:hidden pb-4 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <div key={item.label} className="border-b border-border/40">
